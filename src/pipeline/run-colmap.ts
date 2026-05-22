@@ -13,7 +13,10 @@ function emitChunk(chunk: Buffer, onLog: ((_line: string) => void) | undefined):
 
 function spawnStep(subcommand: string, args: string[], onLog?: (_line: string) => void): Promise<void> {
   return new Promise((resolve, reject) => {
-    const proc = spawn('colmap', [subcommand, ...args], { stdio: ['ignore', 'pipe', 'pipe'] })
+    const proc = spawn('colmap', [subcommand, ...args], {
+      stdio: ['ignore', 'pipe', 'pipe'],
+      env: { ...process.env, QT_QPA_PLATFORM: 'offscreen' },
+    })
     proc.stdout.on('data', (c: Buffer) => emitChunk(c, onLog))
     proc.stderr.on('data', (c: Buffer) => emitChunk(c, onLog))
     proc.on('close', (code) => {
@@ -35,7 +38,7 @@ export async function runColmap(
 
   const steps: [string, string[]][] = [
     ['feature_extractor', ['--database_path', dbPath, '--image_path', framesDir, '--ImageReader.single_camera', '1', '--ImageReader.camera_model', 'OPENCV', '--SiftExtraction.use_gpu', '0']],
-    ['exhaustive_matcher', ['--database_path', dbPath]],
+    ['sequential_matcher', ['--database_path', dbPath]],
     ['mapper', ['--database_path', dbPath, '--image_path', framesDir, '--output_path', sparsePath]],
   ]
 

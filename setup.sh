@@ -2,7 +2,7 @@
 set -e
 
 echo "[setup] Installing COLMAP..."
-apt-get update -qq && apt-get install -y -qq colmap unzip
+apt-get update -qq && apt-get install -y -qq colmap unzip ffmpeg
 
 echo "[setup] Installing nerfstudio..."
 pip install nerfstudio --ignore-installed blinker -q
@@ -18,7 +18,7 @@ if [ -d "splat-deamon" ]; then
   echo "[setup] Repo exists, pulling latest..."
   cd splat-deamon && git pull
 else
-  git clone git@github.com:ME-AS-COMPANY/splat-deamon.git
+  git clone https://github.com/ME-AS-COMPANY/splat-deamon.git
   cd splat-deamon
 fi
 

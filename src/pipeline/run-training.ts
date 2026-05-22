@@ -6,7 +6,7 @@ function emitLines(text: string, onLog: ((_line: string) => void) | undefined): 
   text.split('\n').filter((l) => l.trim()).forEach((l) => onLog(l))
 }
 
-const TOTAL_ITERATIONS = 30_000
+const TOTAL_ITERATIONS = 10_000
 
 interface ProgressUpdate {
   progress: number

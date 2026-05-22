@@ -38,7 +38,7 @@ export async function runColmap(
 
   const steps: [string, string[]][] = [
     ['feature_extractor', ['--database_path', dbPath, '--image_path', framesDir, '--ImageReader.single_camera', '1', '--ImageReader.camera_model', 'OPENCV', '--SiftExtraction.use_gpu', '0']],
-    ['sequential_matcher', ['--database_path', dbPath]],
+    ['sequential_matcher', ['--database_path', dbPath, '--SiftMatching.use_gpu', '0']],
     ['mapper', ['--database_path', dbPath, '--image_path', framesDir, '--output_path', sparsePath]],
   ]
 

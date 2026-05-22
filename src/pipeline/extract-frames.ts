@@ -32,7 +32,7 @@ export function extractFrames(
   return new Promise((resolve, reject) => {
     const args = [
       '-i', videoPath,
-      '-vf', 'fps=3',
+      '-vf', 'fps=2',
       '-qscale:v', '1',
       '-qmin', '1',
       path.join(outputDir, '%04d.jpg'),

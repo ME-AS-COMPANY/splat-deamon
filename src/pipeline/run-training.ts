@@ -37,11 +37,13 @@ export function runTraining(
   return new Promise((resolve, reject) => {
     const args = [
       'splatfacto',
-      '--data', colmapDir,
       '--output-dir', outputDir,
       '--machine.device-type', 'cuda',
       '--pipeline.model.num-downscales', '0',
       '--max-num-iterations', '100',
+      'colmap',
+      '--data', colmapDir,
+      '--colmap-path', 'sparse/0',
     ]
     const proc = spawn('ns-train', args, { stdio: ['ignore', 'pipe', 'pipe'] })
     const startedAt = Date.now()

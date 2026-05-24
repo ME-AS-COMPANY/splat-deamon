@@ -7,6 +7,16 @@ import { runColmap } from './pipeline/run-colmap'
 import { runTraining } from './pipeline/run-training'
 import { LogBuffer } from './log-buffer'
 
+async function withRetry<T>(fn: () => Promise<T>, retries = 5, delayMs = 3000): Promise<T> {
+  for (let i = 0; i < retries; i++) {
+    try { return await fn() } catch (e) {
+      if (i === retries - 1) throw e
+      await new Promise(r => setTimeout(r, delayMs * (i + 1)))
+    }
+  }
+  throw new Error('unreachable')
+}
+
 async function isCancelled(client: ApiClient, jobId: string): Promise<boolean> {
   const job = await client.getJob(jobId)
   return job.status === 'cancelled'
@@ -61,10 +71,10 @@ async function runTrainingAndUpload(job: Job, client: ApiClient, paths: Paths, r
   }, (line) => logBuf.push('training', line))
   if (await isCancelled(client, job.id)) return
 
-  await client.updateJob(job.id, { step: 'upload', progress: 95 })
+  await withRetry(() => client.updateJob(job.id, { step: 'upload', progress: 95 }))
   const plyPath = findPly(paths.output)
-  const plyUrl = await uploadPly(plyPath, job.id, r2Config)
-  await client.updateJob(job.id, { status: 'done', step: 'done', progress: 100, plyUrl, etaSeconds: 0 })
+  const plyUrl = await withRetry(() => uploadPly(plyPath, job.id, r2Config))
+  await withRetry(() => client.updateJob(job.id, { status: 'done', step: 'done', progress: 100, plyUrl, etaSeconds: 0 }))
 }
 
 async function runStages(job: Job, client: ApiClient, paths: Paths, r2Config: R2Config, logBuf: LogBuffer): Promise<void> {

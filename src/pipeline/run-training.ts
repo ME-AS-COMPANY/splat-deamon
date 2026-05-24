@@ -39,7 +39,7 @@ export function runTraining(
       'splatfacto',
       '--data', colmapDir,
       '--output-dir', outputDir,
-      '--machine.device', 'cuda',
+      '--machine.device-type', 'cuda',
       '--pipeline.model.num-downscales', '0',
       '--max-num-iterations', '100',
     ]

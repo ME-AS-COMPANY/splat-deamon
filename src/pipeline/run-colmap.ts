@@ -37,7 +37,7 @@ export async function runColmap(
   mkdirSync(sparsePath, { recursive: true })
 
   const steps: [string, string[]][] = [
-    ['feature_extractor', ['--database_path', dbPath, '--image_path', framesDir, '--ImageReader.single_camera', '1', '--ImageReader.camera_model', 'OPENCV', '--SiftExtraction.max_image_size', '800']],
+    ['feature_extractor', ['--database_path', dbPath, '--image_path', framesDir, '--ImageReader.single_camera', '1', '--ImageReader.camera_model', 'OPENCV']],
     ['sequential_matcher', ['--database_path', dbPath, '--SequentialMatching.overlap', '30']],
     ['mapper', ['--database_path', dbPath, '--image_path', framesDir, '--output_path', sparsePath]],
   ]

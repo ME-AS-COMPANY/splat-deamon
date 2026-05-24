@@ -44,6 +44,7 @@ export function runTraining(
       'colmap',
       '--data', colmapDir,
       '--colmap-path', 'sparse/0',
+      '--downscale-factor', '1',
     ]
     const proc = spawn('ns-train', args, { stdio: ['ignore', 'pipe', 'pipe'] })
     const startedAt = Date.now()

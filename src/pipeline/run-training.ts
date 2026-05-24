@@ -1,4 +1,6 @@
 import { spawn } from 'child_process'
+import { existsSync, symlinkSync } from 'fs'
+import { join } from 'path'
 import { calcEta } from '../eta'
 
 function emitLines(text: string, onLog: ((_line: string) => void) | undefined): void {
@@ -29,11 +31,13 @@ export function runTraining(
   onProgress: (_update: ProgressUpdate) => void,
   onLog?: (_line: string) => void
 ): Promise<void> {
+  const imagesLink = join(colmapDir, 'images')
+  if (!existsSync(imagesLink)) symlinkSync(imagesDir, imagesLink)
+
   return new Promise((resolve, reject) => {
     const args = [
       'splatfacto',
       '--data', colmapDir,
-      '--data.images-path', imagesDir,
       '--output-dir', outputDir,
       '--machine.device', 'cuda',
       '--pipeline.model.num-downscales', '0',

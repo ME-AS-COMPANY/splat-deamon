@@ -8,7 +8,7 @@ function emitLines(text: string, onLog: ((_line: string) => void) | undefined): 
   text.split('\n').filter((l) => l.trim()).forEach((l) => onLog(l))
 }
 
-const TOTAL_ITERATIONS = 100
+const TOTAL_ITERATIONS = 10_000
 
 interface ProgressUpdate {
   progress: number
@@ -61,7 +61,7 @@ export async function runTraining(
       '--output-dir', outputDir,
       '--machine.device-type', 'cuda',
       '--pipeline.model.num-downscales', '0',
-      '--max-num-iterations', '100',
+      '--max-num-iterations', '10000',
       '--viewer.quit-on-train-completion', 'True',
       'colmap',
       '--data', colmapDir,

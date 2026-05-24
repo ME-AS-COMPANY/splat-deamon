@@ -62,6 +62,7 @@ export async function runTraining(
       '--machine.device-type', 'cuda',
       '--pipeline.model.num-downscales', '0',
       '--max-num-iterations', '100',
+      '--viewer.quit-on-train-completion', 'True',
       'colmap',
       '--data', colmapDir,
       '--colmap-path', 'sparse/0',

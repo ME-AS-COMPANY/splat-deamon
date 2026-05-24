@@ -6,7 +6,7 @@ function emitLines(text: string, onLog: ((_line: string) => void) | undefined): 
   text.split('\n').filter((l) => l.trim()).forEach((l) => onLog(l))
 }
 
-const TOTAL_ITERATIONS = 1_000
+const TOTAL_ITERATIONS = 100
 
 interface ProgressUpdate {
   progress: number
@@ -37,7 +37,7 @@ export function runTraining(
       '--output-dir', outputDir,
       '--machine.device', 'cuda',
       '--pipeline.model.num-downscales', '0',
-      '--max-num-iterations', '1000',
+      '--max-num-iterations', '100',
     ]
     const proc = spawn('ns-train', args, { stdio: ['ignore', 'pipe', 'pipe'] })
     const startedAt = Date.now()
